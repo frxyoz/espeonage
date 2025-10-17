@@ -215,6 +215,56 @@ class TestReplayParser(unittest.TestCase):
         self.assertEqual(entry['type'], 'switch')
         self.assertEqual(len(entry['args']), 3)
         self.assertEqual(entry['raw'], '|switch|p1a: Pikachu|Pikachu, L50|150/150')
+    
+    def test_parse_replay_file_raw_log(self):
+        """Test parsing a raw log file (like example_replay.log)."""
+        # Create a temporary raw log file
+        import tempfile
+        log_content = (
+            "|player|p1|TestPlayer1|\n"
+            "|player|p2|TestPlayer2|\n"
+            "|teamsize|p1|3\n"
+            "|teamsize|p2|3\n"
+            "|gametype|singles\n"
+            "|gen|9\n"
+            "|tier|[Gen 9] OU\n"
+            "|switch|p1a: Pikachu|Pikachu, L50|150/150\n"
+            "|switch|p2a: Charizard|Charizard, L50|200/200\n"
+            "|turn|1\n"
+            "|move|p1a: Pikachu|Thunderbolt|p2a: Charizard\n"
+            "|-damage|p2a: Charizard|100/200\n"
+            "|win|TestPlayer1\n"
+        )
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.log', delete=False) as f:
+            f.write(log_content)
+            temp_file = f.name
+        
+        try:
+            result = self.parser.parse_replay_file(temp_file)
+            
+            # Should not return error
+            self.assertNotIn('error', result)
+            
+            # Should have metadata and battle_log
+            self.assertIn('metadata', result)
+            self.assertIn('battle_log', result)
+            
+            # Check battle_log is not empty
+            self.assertGreater(len(result['battle_log']), 0)
+            
+            # Verify it contains expected commands
+            commands = [entry['type'] for entry in result['battle_log']]
+            self.assertIn('player', commands)
+            self.assertIn('switch', commands)
+            self.assertIn('win', commands)
+            
+            # Last entry should be win
+            last_entry = result['battle_log'][-1]
+            self.assertEqual(last_entry['type'], 'win')
+        finally:
+            import os
+            os.unlink(temp_file)
 
 
 if __name__ == '__main__':
