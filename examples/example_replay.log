@@ -1,0 +1,71 @@
+|player|p1|Player1|
+|player|p2|Player2|
+|teamsize|p1|6
+|teamsize|p2|6
+|gametype|singles
+|gen|9
+|tier|[Gen 9] OU
+|rated|
+|rule|Sleep Clause Mod: Limit one foe put to sleep
+|rule|Species Clause: Limit one of each Pokémon
+|rule|OHKO Clause: OHKO moves are banned
+|rule|Evasion Clause: Evasion moves are banned
+|rule|HP Percentage Mod: HP is shown in percentages
+|clearpoke
+|poke|p1|Garchomp, M
+|poke|p1|Toxapex, M
+|poke|p1|Rotom-Wash
+|poke|p2|Landorus-Therian, M
+|poke|p2|Ferrothorn, M
+|poke|p2|Heatran, M
+|teampreview
+|start
+|switch|p1a: Garchomp|Garchomp, M|100/100
+|switch|p2a: Landorus|Landorus-Therian, M|100/100
+|turn|1
+|move|p1a: Garchomp|Earthquake|p2a: Landorus
+|-damage|p2a: Landorus|65/100
+|move|p2a: Landorus|U-turn|p1a: Garchomp
+|-damage|p1a: Garchomp|88/100
+|switch|p2a: Ferrothorn|Ferrothorn, M|100/100|[from] U-turn
+|turn|2
+|switch|p1a: Toxapex|Toxapex, M|100/100
+|move|p2a: Ferrothorn|Stealth Rock|p1a: Toxapex
+|-sidestart|p1: Player1|move: Stealth Rock
+|turn|3
+|move|p1a: Toxapex|Scald|p2a: Ferrothorn
+|-damage|p2a: Ferrothorn|85/100
+|move|p2a: Ferrothorn|Leech Seed|p1a: Toxapex
+|-start|p1a: Toxapex|move: Leech Seed
+|turn|4
+|switch|p2a: Heatran|Heatran, M|100/100
+|-ability|p2a: Heatran|Flash Fire
+|move|p1a: Toxapex|Toxic|p2a: Heatran
+|-status|p2a: Heatran|tox
+|turn|5
+|move|p2a: Heatran|Magma Storm|p1a: Toxapex
+|-damage|p1a: Toxapex|82/100
+|-start|p1a: Toxapex|Magma Storm
+|move|p1a: Toxapex|Recover|p1a: Toxapex
+|-heal|p1a: Toxapex|100/100
+|turn|6
+|switch|p1a: Garchomp|Garchomp, M|88/100
+|move|p2a: Heatran|Earth Power|p1a: Garchomp
+|-damage|p1a: Garchomp|45/100
+|turn|7
+|move|p1a: Garchomp|Earthquake|p2a: Heatran
+|-damage|p2a: Heatran|0 fnt
+|faint|p2a: Heatran
+|switch|p2a: Landorus|Landorus-Therian, M|65/100
+|-ability|p2a: Landorus|Intimidate|boost
+|-unboost|p1a: Garchomp|atk|1
+|turn|8
+|move|p2a: Landorus|Earthquake|p1a: Garchomp
+|-damage|p1a: Garchomp|0 fnt
+|faint|p1a: Garchomp
+|switch|p1a: Rotom|Rotom-Wash|100/100
+|turn|9
+|move|p1a: Rotom|Hydro Pump|p2a: Landorus
+|-damage|p2a: Landorus|0 fnt
+|faint|p2a: Landorus
+|win|Player1
