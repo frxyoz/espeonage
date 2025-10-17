@@ -39,12 +39,12 @@ class TestReplayParser(unittest.TestCase):
         
         # Verify chat lines were filtered out
         for entry in result['battle_log']:
-            self.assertNotEqual(entry['command'], 'c')
-            self.assertNotEqual(entry['command'], 'chat')
+            self.assertNotEqual(entry['type'], 'c')
+            self.assertNotEqual(entry['type'], 'chat')
         
         # Verify the log stopped at win command (should be the last entry)
         last_entry = result['battle_log'][-1]
-        self.assertEqual(last_entry['command'], 'win')
+        self.assertEqual(last_entry['type'], 'win')
     
     def test_parse_replay_html_with_embed(self):
         """Test parsing HTML with Replays.embed pattern."""
@@ -129,7 +129,7 @@ class TestReplayParser(unittest.TestCase):
         
         # Last entry should be win
         last_entry = result['battle_log'][-1]
-        self.assertEqual(last_entry['command'], 'win')
+        self.assertEqual(last_entry['type'], 'win')
     
     def test_chat_filtering(self):
         """Test that chat and UI lines are filtered out."""
@@ -149,7 +149,7 @@ class TestReplayParser(unittest.TestCase):
         
         # Check that no chat/html/error entries exist
         for entry in result['battle_log']:
-            self.assertNotIn(entry['command'], ['c', 'chat', 'html', 'error'])
+            self.assertNotIn(entry['type'], ['c', 'chat', 'html', 'error'])
     
     def test_terminal_command_stops_parsing(self):
         """Test that parsing stops at terminal commands."""
@@ -166,10 +166,10 @@ class TestReplayParser(unittest.TestCase):
         
         # Last command should be win
         last_entry = result['battle_log'][-1]
-        self.assertEqual(last_entry['command'], 'win')
+        self.assertEqual(last_entry['type'], 'win')
         
         # Should not have turn 2 entries
-        commands = [entry['command'] for entry in result['battle_log']]
+        commands = [entry['type'] for entry in result['battle_log']]
         # Count how many turns we have
         turn_count = commands.count('turn')
         self.assertEqual(turn_count, 1)
@@ -188,7 +188,7 @@ class TestReplayParser(unittest.TestCase):
         
         # Last command should be tie
         last_entry = result['battle_log'][-1]
-        self.assertEqual(last_entry['command'], 'tie')
+        self.assertEqual(last_entry['type'], 'tie')
     
     def test_parse_replay_html_no_data(self):
         """Test parsing HTML with no replay data."""
@@ -208,11 +208,11 @@ class TestReplayParser(unittest.TestCase):
         
         # Check structure of parsed entry
         entry = result['battle_log'][0]
-        self.assertIn('command', entry)
+        self.assertIn('type', entry)
         self.assertIn('args', entry)
         self.assertIn('raw', entry)
         
-        self.assertEqual(entry['command'], 'switch')
+        self.assertEqual(entry['type'], 'switch')
         self.assertEqual(len(entry['args']), 3)
         self.assertEqual(entry['raw'], '|switch|p1a: Pikachu|Pikachu, L50|150/150')
 

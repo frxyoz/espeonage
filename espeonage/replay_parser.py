@@ -15,6 +15,7 @@ import re
 import json
 import urllib.request
 import urllib.error
+import ssl
 from typing import Dict, Any, List, Optional
 
 
@@ -40,9 +41,15 @@ class ReplayParser:
             or an error dict if parsing fails.
         """
         try:
+            # Create SSL context that doesn't verify certificates
+            # This allows the tool to work on systems with certificate issues
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+            
             # Fetch HTML page
             req = urllib.request.Request(url, headers={'User-Agent': 'Espeonage-ReplayParser/0.1'})
-            with urllib.request.urlopen(req, timeout=10) as response:
+            with urllib.request.urlopen(req, timeout=10, context=ssl_context) as response:
                 html = response.read().decode('utf-8')
             
             # Try to parse HTML
@@ -53,7 +60,7 @@ class ReplayParser:
                 json_url = url.rstrip('/') + '.json'
                 try:
                     json_req = urllib.request.Request(json_url, headers={'User-Agent': 'Espeonage-ReplayParser/0.1'})
-                    with urllib.request.urlopen(json_req, timeout=10) as json_response:
+                    with urllib.request.urlopen(json_req, timeout=10, context=ssl_context) as json_response:
                         json_data = json.loads(json_response.read().decode('utf-8'))
                     
                     # Check if JSON has valid replay data
@@ -319,7 +326,7 @@ class ReplayParser:
         args = parts[1:] if len(parts) > 1 else []
         
         return {
-            'command': command,
+            'type': command,
             'args': args,
             'raw': line
         }
