@@ -1,0 +1,7 @@
+{
+    "id": "gen9ou-jsontest",
+    "format": "gen9ou",
+    "p1": "JsonPlayer1",
+    "p2": "JsonPlayer2",
+    "log": "|player|p1|JsonPlayer1|avatar\n|player|p2|JsonPlayer2|avatar\n|teamsize|p1|6\n|teamsize|p2|6\n|gametype|singles\n|gen|9\n|tier|[Gen 9] OU\n|turn|1\n|switch|p1a: Tyranitar|Tyranitar, L77, M|314/314\n|switch|p2a: Excadrill|Excadrill, L76, M|302/302\n|turn|2\n|move|p1a: Tyranitar|Stone Edge|p2a: Excadrill\n|-damage|p2a: Excadrill|0 fnt\n|faint|p2a: Excadrill\n|win|JsonPlayer1"
+}
