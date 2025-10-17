@@ -1,0 +1,26 @@
+{
+  "name": "espeonage",
+  "version": "0.1.0",
+  "description": "A hybrid Python + Node.js tool that parses Pokémon Showdown replays, simulates battle progress, and infers each Pokémon's potential items, EV spreads, and K/D ratios",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm install @smogon/calc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frxyoz/espeonage.git"
+  },
+  "keywords": [
+    "pokemon",
+    "showdown",
+    "replay",
+    "parser",
+    "damage-calc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@smogon/calc": "^0.10.0"
+  }
+}
