@@ -10,6 +10,65 @@ from .damage_calculator import DamageCalculator
 class BattleSimulator:
     """Simulates battle progress from replay logs"""
     
+    # Comprehensive list of non-attacking moves to filter out
+    NON_ATTACK_MOVES = {
+        # Status moves
+        'Toxic', 'Thunder Wave', 'Will-O-Wisp', 'Spore', 'Sleep Powder', 'Stun Spore',
+        'Hypnosis', 'Yawn', 'Poison Powder', 'Glare', 'Paralyze', 'Confuse Ray',
+        'Supersonic', 'Swagger', 'Sweet Kiss', 'Attract', 'Taunt', 'Torment',
+        'Encore', 'Disable', 'Heal Block', 'Embargo', 'Leech Seed',
+        
+        # Entry hazards
+        'Spikes', 'Toxic Spikes', 'Stealth Rock', 'Sticky Web',
+        
+        # Field effects
+        'Trick Room', 'Magic Room', 'Wonder Room', 'Gravity', 'Grassy Terrain',
+        'Misty Terrain', 'Electric Terrain', 'Psychic Terrain', 'Rain Dance',
+        'Sunny Day', 'Sandstorm', 'Hail', 'Snow', 'Tailwind', 'Light Screen',
+        'Reflect', 'Aurora Veil', 'Safeguard', 'Mist',
+        
+        # Boosting/status moves
+        'Swords Dance', 'Dragon Dance', 'Nasty Plot', 'Calm Mind', 'Bulk Up',
+        'Agility', 'Rock Polish', 'Quiver Dance', 'Shift Gear', 'Coil',
+        'Curse', 'Iron Defense', 'Amnesia', 'Acid Armor', 'Barrier',
+        'Cosmic Power', 'Cotton Guard', 'Defend Order', 'Harden', 'Withdraw',
+        'Defense Curl', 'Stockpile', 'Charge', 'Focus Energy', 'Meditate',
+        'Sharpen', 'Acupressure', 'Howl', 'Work Up', 'Growth', 'Hone Claws',
+        'Shell Smash', 'Tail Glow', 'Geomancy', 'No Retreat',
+        
+        # Recovery moves
+        'Recover', 'Roost', 'Slack Off', 'Soft-Boiled', 'Rest', 'Wish',
+        'Healing Wish', 'Lunar Dance', 'Heal Order', 'Milk Drink', 'Moonlight',
+        'Morning Sun', 'Synthesis', 'Heal Bell', 'Aromatherapy', 'Refresh',
+        'Purify', 'Life Dew', 'Shore Up', 'Swallow', 'Strength Sap',
+        
+        # Protection moves
+        'Protect', 'Detect', 'Endure', 'King\'s Shield', 'Spiky Shield',
+        'Baneful Bunker', 'Obstruct', 'Silk Trap', 'Burning Bulwark',
+        
+        # Switching/pivot moves (these don't directly deal KO damage)
+        'Teleport', 'Baton Pass', 'Parting Shot', 'Shed Shell',
+        
+        # Support moves
+        'Substitute', 'Helping Hand', 'Follow Me', 'Rage Powder', 'Spotlight',
+        'Ally Switch', 'Trick', 'Switcheroo', 'Bestow', 'Instruct',
+        'Skill Swap', 'Role Play', 'Entrainment', 'Guard Split', 'Power Split',
+        'Speed Swap', 'Guard Swap', 'Power Swap', 'Heart Swap', 'Mimic',
+        'Transform', 'Copycat', 'Me First', 'Snatch', 'Recycle', 'Metronome',
+        
+        # Weather/terrain setters (already listed above but including for clarity)
+        
+        # Other non-damaging moves
+        'Splash', 'Celebrate', 'Hold Hands', 'Happy Hour', 'Conversion',
+        'Conversion 2', 'Camouflage', 'Nightmare', 'Perish Song', 'Mean Look',
+        'Block', 'Spider Web', 'Sand Tomb', 'Whirlpool', 'Bind', 'Wrap',
+        'Fire Spin', 'Magma Storm', 'Infestation', 'Clamp', 'Snore', 'Forest\'s Curse',
+        'Trick-or-Treat', 'Rototiller', 'Magnetic Flux', 'Gear Up', 'Electric Terrain',
+        'Flower Shield', 'Ion Deluge', 'Powder', 'Tearful Look', 'Baby-Doll Eyes',
+        'Play Nice', 'Venom Drench', 'Stockpile', 'Belly Drum', 'Psych Up',
+        'Power Trick', 'Guard Split', 'Power Split', 'Speed Swap',
+    }
+    
     def __init__(self):
         self.tracker = PokemonTracker()
         self.calculator = DamageCalculator()
@@ -95,6 +154,18 @@ class BattleSimulator:
             return int(current), int(max_hp), status
         
         return None, None, status
+    
+    def _is_attack_move(self, move: str) -> bool:
+        """
+        Determine if a move is a direct attacking move
+        
+        Args:
+            move: Move name
+            
+        Returns:
+            True if the move is a direct attack, False otherwise
+        """
+        return move not in self.NON_ATTACK_MOVES
     
     def _handle_player(self, args: List[str]):
         """Handle player command"""
@@ -184,7 +255,12 @@ class BattleSimulator:
                 opponent = 'p1' if player == 'p2' else 'p2'
                 if opponent in self.last_move:
                     attacker_id = self.last_move[opponent]['pokemon']
-                    self.tracker.track_knockout(attacker_id)
+                    move = self.last_move[opponent]['move']
+                    
+                    # Only attribute kill to move if it's an attacking move
+                    if self._is_attack_move(move):
+                        self.tracker.track_knockout(attacker_id)
+                        self.tracker.track_move_kill(attacker_id, move)
     
     def _handle_ability(self, args: List[str]):
         """Handle ability reveal"""

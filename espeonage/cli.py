@@ -131,6 +131,14 @@ def format_text_output(results: dict) -> str:
                 if data['moves']:
                     lines.append(f"  Moves: {', '.join(data['moves'])}")
                 
+                # Display move kills if any
+                if data.get('move_kills') and any(kills > 0 for kills in data['move_kills'].values()):
+                    lines.append(f"  Move Kills:")
+                    for move, kills in sorted(data['move_kills'].items()):
+                        if kills > 0:
+                            ko_text = "KO" if kills == 1 else "KOs"
+                            lines.append(f"    {move}: {kills} {ko_text}")
+                
                 lines.append(f"  Stats:")
                 lines.append(f"    K/D Ratio: {data['kd_ratio']:.2f} ({data['knockouts']}/{data['deaths']})")
                 lines.append(f"    Damage Dealt: {data['damage_dealt']}")
