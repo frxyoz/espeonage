@@ -1,6 +1,17 @@
-# Espeonage
+<div align="center">
+  <h1>Espeonage</h1>
+  <p><i>
+    “A Future Sight for your next matchup!”
+  </i>
+  </p>
+  <p>
+    <i>
+      A hybrid Python + Node.js tool that parses Pokémon Showdown replays, simulates battle progress, 
+      and infers each Pokémon's potential items, EV spreads, and K/D ratios using Smogon's official damage calculation engine.
+    </i>
+  </p>
+</div>
 
-A hybrid Python + Node.js tool that parses Pokémon Showdown replays, simulates battle progress, and infers each Pokémon's potential items, EV spreads, and K/D ratios using Showdown's official damage calculation engine.
 
 ## Features
 
