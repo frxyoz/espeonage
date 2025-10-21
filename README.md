@@ -178,6 +178,8 @@ espeonage/
 
 - Damage calculations powered by [Smogon's damage calculator](https://github.com/smogon/damage-calc)
 - Pokémon Showdown replay format
+- Intellectual Property: All graphics, assets, and terminology related to the Pokémon franchise are the intellectual property of Nintendo, Creatures Inc., and GAME FREAK Inc., and are protected by various copyrights and trademarks.
+- Ownership: This project is not affiliated with, endorsed by, or sponsored by Nintendo or The Pokémon Company International.
 
 ## License
 
