@@ -1,5 +1,6 @@
 <div align="center">
   <h1>Espeonage</h1>
+  ![Espeonage Logo](assets/logo.png)
   <p><i>
     “A Future Sight for your next matchup!”
   </i>

@@ -28,6 +28,7 @@ class PokemonData:
     deaths: int = 0
     damage_dealt: int = 0
     damage_taken: int = 0
+    move_kills: Dict[str, int] = field(default_factory=dict)
     
     # EV/IV inference data
     observed_stats: Dict[str, List[int]] = field(default_factory=dict)
@@ -187,6 +188,19 @@ class PokemonTracker:
         if pokemon in self.pokemon:
             self.pokemon[pokemon].add_knockout()
     
+    def track_move_kill(self, pokemon: str, move: str):
+        """
+        Track when a Pokémon gets a knockout with a specific move
+        
+        Args:
+            pokemon: Pokémon identifier
+            move: Move name that got the kill
+        """
+        if pokemon in self.pokemon:
+            if move not in self.pokemon[pokemon].move_kills:
+                self.pokemon[pokemon].move_kills[move] = 0
+            self.pokemon[pokemon].move_kills[move] += 1
+    
     def track_damage(self, attacker: str, defender: str, damage: int):
         """
         Track damage dealt and taken
@@ -229,5 +243,6 @@ class PokemonTracker:
                 'kd_ratio': data.get_kd_ratio(),
                 'damage_dealt': data.damage_dealt,
                 'damage_taken': data.damage_taken,
+                'move_kills': data.move_kills,
             }
         return summary
