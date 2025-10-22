@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Espeonage</h1>
-    <img src="/assets/logo.png" alt="Espeonage Logo" width="200"/>
+    <img src="/assets/logo.png" alt="Espeonage Logo" width="560"/>
   <p><i>
     “A Future Sight for your next matchup!”
   </i>
